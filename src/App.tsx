@@ -1,5 +1,7 @@
+import PlayerApp from "./components/02-Organisms/PlayerApp/PlayerApp";
+
 const App = () => {
-  return <h1>Test</h1>;
+  return <PlayerApp />;
 };
 
 export default App;
