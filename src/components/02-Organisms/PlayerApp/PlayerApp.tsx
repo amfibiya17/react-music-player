@@ -50,7 +50,7 @@ const PlayerApp = () => {
         <ul className="bg-base-100 w-full p-2 rounded-lg">
           {TRACKS.map((track, index) => (
             <Track
-              key={track.file}
+              key={track.id}
               track={track}
               isSelected={index === selectedIndex}
               onSelect={() => handleSelectTrack(index)}
