@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Player from "../Player/Player";
-import Track from "../../01-Molecules/Track/Track";
 import { TRACKS } from "../../../data/track-data";
 import { usePlayerController } from "./hooks/usePlayerController";
 import { playerAppText } from "../../../data/ui-text";
 import TransportControls from "../TransportControls/TransportControls";
 import ProgressBar from "../../01-Molecules/ProgressBar/ProgressBar";
 import VolumeControl from "../../01-Molecules/VolumeControl/VolumeControl";
+import TrackList from "../TrackList/TrackList";
 
 const PlayerApp = () => {
   const {
@@ -46,16 +46,11 @@ const PlayerApp = () => {
       </header>
 
       <section aria-label={playerAppText.trackListLabel} className="mb-4">
-        <ul className="bg-base-100 w-full p-2 rounded-lg">
-          {TRACKS.map((track) => (
-            <Track
-              key={track.id}
-              track={track}
-              isSelected={track.id === selectedTrack?.id}
-              onSelect={() => handleSelectTrack(track.id)}
-            />
-          ))}
-        </ul>
+        <TrackList
+          tracks={TRACKS}
+          selectedTrackId={selectedTrack?.id ?? null}
+          onSelectTrack={handleSelectTrack}
+        />
       </section>
 
       <section aria-label={playerAppText.controlsLabel} className="mb-2">
