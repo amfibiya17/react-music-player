@@ -3,9 +3,9 @@ import { usePlayerController } from "./usePlayerController";
 import type { TrackData } from "../../../../types/track";
 
 const mockTracks: TrackData[] = [
-  { title: "Track 1", file: "track1.mp3" },
-  { title: "Track 2", file: "track2.mp3" },
-  { title: "Track 3", file: "track3.mp3" },
+  { id: "track-1", title: "Track 1", file: "track1.mp3" },
+  { id: "track-2", title: "Track 2", file: "track2.mp3" },
+  { id: "track-3", title: "Track 3", file: "track3.mp3" },
 ];
 
 describe("usePlayerController", () => {
@@ -23,7 +23,7 @@ describe("usePlayerController", () => {
     const { result } = renderHook(() => usePlayerController(mockTracks));
 
     act(() => {
-      result.current.handleSelectTrack(1);
+      result.current.handleSelectTrack("track-2");
     });
 
     expect(result.current.selectedIndex).toBe(1);
@@ -34,7 +34,7 @@ describe("usePlayerController", () => {
     const { result } = renderHook(() => usePlayerController(mockTracks));
 
     act(() => {
-      result.current.handleSelectTrack(0);
+      result.current.handleSelectTrack("track-1");
     });
 
     expect(result.current.selectedIndex).toBe(0);

@@ -145,15 +145,16 @@ describe("PlayerApp", () => {
     expect(player).toHaveAttribute("data-audio-src", TRACKS[0].file);
   });
 
-  test("clicking a track calls handleSelectTrack with the correct index", () => {
+  test("clicking a track calls handleSelectTrack with the correct id", () => {
     render(<PlayerApp />);
 
     const trackButtons = screen.getAllByTestId("track-item");
-
     fireEvent.click(trackButtons[1]);
 
     expect(controllerState.handleSelectTrack).toHaveBeenCalledTimes(1);
-    expect(controllerState.handleSelectTrack).toHaveBeenCalledWith(1);
+    expect(controllerState.handleSelectTrack).toHaveBeenCalledWith(
+      TRACKS[1].id
+    );
   });
 
   test("volume control calls handleChangeVolume when interacted with", () => {
