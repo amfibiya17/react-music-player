@@ -1,11 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import PlayerApp from "./PlayerApp";
 import { usePlayerController } from "./hooks/usePlayerController";
+import { usePlaybackTime } from "./hooks/usePlaybackTime";
 import { playerAppText } from "../../../data/ui-text";
 import { TRACKS } from "../../../data/track-data";
 import type { TrackData } from "../../../types/track";
 
 jest.mock("./hooks/usePlayerController");
+jest.mock("./hooks/usePlaybackTime");
 
 jest.mock("../Player/Player", () => ({
   __esModule: true,
@@ -93,8 +95,11 @@ const mockedUsePlayerController = usePlayerController as jest.MockedFunction<
   typeof usePlayerController
 >;
 
-type ControllerState = ReturnType<typeof usePlayerController>;
+const mockedUsePlaybackTime = usePlaybackTime as jest.MockedFunction<
+  typeof usePlaybackTime
+>;
 
+type ControllerState = ReturnType<typeof usePlayerController>;
 let controllerState: ControllerState;
 
 const setupControllerMock = () => {
@@ -114,6 +119,14 @@ const setupControllerMock = () => {
   };
 
   mockedUsePlayerController.mockReturnValue(controllerState);
+
+  mockedUsePlaybackTime.mockReturnValue({
+    currentTime: 10,
+    duration: 120,
+    seekTime: null,
+    handleTimeChange: jest.fn(),
+    handleSeek: jest.fn(),
+  });
 };
 
 describe("PlayerApp", () => {
@@ -140,6 +153,10 @@ describe("PlayerApp", () => {
     const controls = screen.getByTestId("transport-controls");
     expect(controls).toHaveAttribute("data-is-playing", "true");
     expect(controls).toHaveAttribute("data-is-repeat-enabled", "true");
+
+    const progress = screen.getByTestId("progress-bar");
+    expect(progress).toHaveAttribute("data-current-time", "10");
+    expect(progress).toHaveAttribute("data-duration", "120");
 
     const player = screen.getByTestId("player");
     expect(player).toHaveAttribute("data-audio-src", TRACKS[0].file);
