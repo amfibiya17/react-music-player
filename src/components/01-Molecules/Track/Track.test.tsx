@@ -3,6 +3,7 @@ import Track from "./Track";
 import type { TrackData } from "../../../types/track";
 
 const mockTrack: TrackData = {
+  id: "test-track",
   title: "Test Track",
   file: "test.mp3",
 };
