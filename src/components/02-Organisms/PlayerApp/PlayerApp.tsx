@@ -1,7 +1,7 @@
-import { useState } from "react";
 import Player from "../Player/Player";
 import { TRACKS } from "../../../data/track-data";
 import { usePlayerController } from "./hooks/usePlayerController";
+import { usePlaybackTime } from "./hooks/usePlaybackTime";
 import { playerAppText } from "../../../data/ui-text";
 import TransportControls from "../TransportControls/TransportControls";
 import ProgressBar from "../../01-Molecules/ProgressBar/ProgressBar";
@@ -23,19 +23,8 @@ const PlayerApp = () => {
     handleChangeVolume,
   } = usePlayerController(TRACKS);
 
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [seekTime, setSeekTime] = useState<number | null>(null);
-
-  const handleTimeChange = (time: number, total: number) => {
-    setCurrentTime(time);
-    setDuration(total);
-  };
-
-  const handleSeek = (time: number) => {
-    setSeekTime(time);
-    setCurrentTime(time);
-  };
+  const { currentTime, duration, seekTime, handleTimeChange, handleSeek } =
+    usePlaybackTime();
 
   return (
     <main className="card bg-base-200 border border-base-300 shadow-lg w-full max-w-sm mx-auto p-6">
