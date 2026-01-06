@@ -2,16 +2,25 @@ import { useState } from "react";
 import type { TrackData } from "../../../../types/track";
 
 export const usePlayerController = (tracks: TrackData[]) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedTrackId, setSelectedTrackId] = useState<string | null>(
+    tracks[0]?.id ?? null
+  );
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [isRepeatEnabled, setIsRepeatEnabled] = useState(false);
 
-  const selectedTrack = tracks[selectedIndex] ?? null;
+  const selectedIndex =
+    selectedTrackId === null
+      ? 0
+      : tracks.findIndex((track) => track.id === selectedTrackId);
 
-  const handleSelectTrack = (index: number) => {
-    if (index === selectedIndex) return;
-    setSelectedIndex(index);
+  const safeIndex = selectedIndex >= 0 ? selectedIndex : 0;
+
+  const selectedTrack = tracks.length > 0 ? tracks[safeIndex] : null;
+
+  const handleSelectTrack = (id: string) => {
+    if (id === selectedTrackId) return;
+    setSelectedTrackId(id);
   };
 
   const handleTogglePlayPause = () => {
@@ -26,16 +35,17 @@ export const usePlayerController = (tracks: TrackData[]) => {
   const handleNextTrack = () => {
     if (tracks.length === 0) return;
 
-    const nextIndex = (selectedIndex + 1) % tracks.length;
-    setSelectedIndex(nextIndex);
+    const currentIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    const nextIndex = (currentIndex + 1) % tracks.length;
+    setSelectedTrackId(tracks[nextIndex].id);
   };
 
   const handlePreviousTrack = () => {
     if (tracks.length === 0) return;
 
-    const prevIndex = (selectedIndex - 1 + tracks.length) % tracks.length;
-
-    setSelectedIndex(prevIndex);
+    const currentIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    const prevIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+    setSelectedTrackId(tracks[prevIndex].id);
   };
 
   const handleToggleRepeat = () => {

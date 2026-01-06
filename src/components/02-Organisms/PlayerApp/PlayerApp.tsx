@@ -10,7 +10,6 @@ import VolumeControl from "../../01-Molecules/VolumeControl/VolumeControl";
 
 const PlayerApp = () => {
   const {
-    selectedIndex,
     isPlaying,
     selectedTrack,
     volume,
@@ -48,12 +47,12 @@ const PlayerApp = () => {
 
       <section aria-label={playerAppText.trackListLabel} className="mb-4">
         <ul className="bg-base-100 w-full p-2 rounded-lg">
-          {TRACKS.map((track, index) => (
+          {TRACKS.map((track) => (
             <Track
               key={track.id}
               track={track}
-              isSelected={index === selectedIndex}
-              onSelect={() => handleSelectTrack(index)}
+              isSelected={track.id === selectedTrack?.id}
+              onSelect={() => handleSelectTrack(track.id)}
             />
           ))}
         </ul>
